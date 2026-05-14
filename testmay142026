@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOCT WAVE — Portfolio Musical</title>
+  <meta name="description" content="Site demonstração de portfolio musical para artista, banda, DJ ou produtor." />
+  <style>
+    :root {
+      --bg: #050507;
+      --bg-2: #0d0d13;
+      --card: rgba(255,255,255,0.07);
+      --card-2: rgba(255,255,255,0.12);
+      --text: #f5f5f7;
+      --muted: #a6a6b3;
+      --line: rgba(255,255,255,0.14);
+      --accent: #c7ff00;
+      --accent-2: #ff2bd6;
+      --accent-3: #00d5ff;
+      --shadow: 0 24px 80px rgba(0,0,0,0.55);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 12%, rgba(255,43,214,0.25), transparent 34%),
+        radial-gradient(circle at 82% 10%, rgba(0,213,255,0.22), transparent 32%),
+        radial-gradient(circle at 50% 82%, rgba(199,255,0,0.16), transparent 36%),
+        linear-gradient(180deg, #050507 0%, #0b0b12 46%, #050507 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 82%);
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(22px);
+      background: rgba(5,5,7,0.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background:
+        linear-gradient(135deg, var(--accent), var(--accent-3));
+      box-shadow: 0 0 24px rgba(199,255,0,0.35);
+      position: relative;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border: 2px solid #050507;
+      border-radius: 8px;
+      transform: rotate(12deg);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      min-height: 46px;
+      padding: 0 20px;
+      font-weight: 800;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.24);
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #eaff7d);
+      color: #08090b;
+      border: 0;
+    }
+
+    .hero {
+      min-height: calc(100vh - 76px);
+      display: grid;
+      align-items: center;
+      padding: 74px 0 54px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 52px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .17em;
+      font-size: .78rem;
+      font-weight: 900;
+      margin-bottom: 22px;
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 22px var(--accent);
+      animation: pulse 1.45s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.55); opacity: .45; }
+    }
+
+    h1 {
+      font-size: clamp(3.25rem, 8vw, 8.7rem);
+      line-height: .82;
+      letter-spacing: -0.09em;
+      margin: 0 0 26px;
+      text-transform: uppercase;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--text), var(--accent), var(--accent-3), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+      line-height: 1.62;
+      margin: 0 0 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .hero-card {
+      position: relative;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.045));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-height: 590px;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(from 180deg, transparent, rgba(199,255,0,0.2), transparent, rgba(255,43,214,0.24), transparent, rgba(0,213,255,0.22), transparent);
+      animation: spin 10s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .cover {
+      position: absolute;
+      inset: 1px;
+      border-radius: calc(var(--radius) - 1px);
+      background:
+        linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.72)),
+        url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1200&q=80') center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px;
+    }
+
+    .release-badge {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.48);
+      backdrop-filter: blur(12px);
+      border-radius: 999px;
+      padding: 9px 13px;
+      color: var(--accent);
+      font-weight: 900;
+      font-size: .78rem;
+      letter-spacing: .08em;
+    }
+
+    .cover-title {
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      line-height: .9;
+      letter-spacing: -0.07em;
+      margin: 0 0 14px;
+      text-transform: uppercase;
+    }
+
+    .cover-meta { color: var(--muted); margin: 0 0 20px; }
+
+    .player {
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.48);
+      backdrop-filter: blur(16px);
+      border-radius: 22px;
+      padding: 16px;
+    }
+
+    .player-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .play {
+      width: 52px;
+      height: 52px;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      background: var(--accent);
+      color: #050507;
+      font-size: 1.1rem;
+      box-shadow: 0 0 24px rgba(199,255,0,0.35);
+    }
+
+    .track-name { font-weight: 900; }
+    .track-desc { color: var(--muted); font-size: .9rem; }
+
+    .bars {
+      display: flex;
+      align-items: end;
+      gap: 4px;
+      height: 42px;
+    }
+
+    .bars span {
+      width: 7px;
+      border-radius: 999px;
+      background: linear-gradient(var(--accent-3), var(--accent));
+      height: calc(10px + var(--h) * 1px);
+      animation: eq .9s ease-in-out infinite alternate;
+      animation-delay: calc(var(--i) * -.08s);
+    }
+
+    @keyframes eq { to { height: calc(14px + var(--h2) * 1px); } }
+
+    .progress {
+      height: 7px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.14);
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      width: 67%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-3));
+      border-radius: inherit;
+    }
+
+    .section { padding: 88px 0; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 34px;
+    }
+
+    .section-title {
+      font-size: clamp(2.1rem, 4vw, 4.4rem);
+      line-height: .92;
+      letter-spacing: -0.07em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .section-copy {
+      max-width: 520px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 42px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2.1rem;
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+
+    .stat span { color: var(--muted); }
+
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .album {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 26px;
+      overflow: hidden;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .album:hover { transform: translateY(-5px); background: var(--card-2); }
+
+    .album-art {
+      aspect-ratio: 1;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), transparent 18%),
+        linear-gradient(135deg, rgba(199,255,0,.82), rgba(0,213,255,.55), rgba(255,43,214,.75));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .album:nth-child(2) .album-art {
+      background: linear-gradient(135deg, rgba(255,43,214,.78), rgba(30,30,40,.95), rgba(199,255,0,.6));
+    }
+
+    .album:nth-child(3) .album-art {
+      background: linear-gradient(135deg, rgba(0,213,255,.82), rgba(8,8,10,.9), rgba(255,255,255,.32));
+    }
+
+    .album-art::before {
+      content: "";
+      position: absolute;
+      inset: 14%;
+      border: 1px solid rgba(0,0,0,.3);
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 32px rgba(0,0,0,.18), 0 0 0 18px rgba(255,255,255,.08);
+    }
+
+    .album-body { padding: 20px; }
+    .album-body h3 { margin: 0 0 6px; font-size: 1.25rem; letter-spacing: -0.03em; }
+    .album-body p { margin: 0 0 16px; color: var(--muted); }
+
+    .track-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .track {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.055);
+      border-radius: 18px;
+    }
+
+    .track-index {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(255,255,255,0.1);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .track h4 { margin: 0 0 4px; }
+    .track p { margin: 0; color: var(--muted); font-size: .93rem; }
+    .duration { color: var(--muted); }
+
+    .bio-grid {
+      display: grid;
+      grid-template-columns: .78fr 1.22fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .portrait {
+      min-height: 520px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(rgba(0,0,0,.05), rgba(0,0,0,.68)),
+        url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1000&q=80') center/cover;
+      box-shadow: var(--shadow);
+    }
+
+    .bio-card {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .bio-card p {
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 1.06rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-weight: 800;
+      font-size: .88rem;
+    }
+
+    .events {
+      display: grid;
+      gap: 12px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 130px 1fr auto;
+      gap: 18px;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .date {
+      color: var(--accent);
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .event h3 { margin: 0 0 5px; }
+    .event p { margin: 0; color: var(--muted); }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr .75fr;
+      grid-auto-rows: 230px;
+      gap: 14px;
+    }
+
+    .gallery-item {
+      border-radius: 26px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background: var(--card);
+      position: relative;
+    }
+
+    .gallery-item:nth-child(1) { grid-row: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.2) contrast(1.03);
+      opacity: .82;
+      transition: transform .35s ease, opacity .35s ease;
+    }
+
+    .gallery-item:hover img { transform: scale(1.05); opacity: 1; }
+
+    .press-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .press-card {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 26px;
+      padding: 24px;
+    }
+
+    .press-card h3 { margin: 0 0 10px; }
+    .press-card p { margin: 0 0 20px; color: var(--muted); line-height: 1.58; }
+
+    .contact {
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(199,255,0,0.16), rgba(255,43,214,0.10), rgba(0,213,255,0.13)),
+        rgba(255,255,255,0.06);
+      padding: clamp(28px, 6vw, 62px);
+      display: grid;
+      grid-template-columns: 1fr .85fr;
+      gap: 34px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .contact h2 {
+      font-size: clamp(2.3rem, 5vw, 5.2rem);
+      line-height: .9;
+      letter-spacing: -0.07em;
+      margin: 0 0 18px;
+      text-transform: uppercase;
+    }
+
+    .contact p { color: var(--muted); line-height: 1.65; }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.32);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 16px 17px;
+      font: inherit;
+      outline: 0;
+    }
+
+    textarea { min-height: 132px; resize: vertical; }
+
+    input:focus, textarea:focus { border-color: rgba(199,255,0,0.65); }
+
+    .footer {
+      padding: 38px 0;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .socials {
+      display: flex;
+      gap: 14px;
+    }
+
+    .socials a { color: var(--text); font-weight: 800; }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero-grid, .bio-grid, .contact { grid-template-columns: 1fr; }
+      .hero-card { min-height: 560px; }
+      .stats, .music-grid, .press-grid { grid-template-columns: 1fr 1fr; }
+      .event { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .gallery-item:nth-child(1), .gallery-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+    }
+
+    @media (max-width: 620px) {
+      .container { width: min(100% - 24px, 1180px); }
+      .hero { padding-top: 42px; }
+      .stats, .music-grid, .press-grid, .gallery { grid-template-columns: 1fr; }
+      .hero-card { min-height: 520px; }
+      .section-head { display: block; }
+      .section-copy { margin-top: 14px; }
+      .track { grid-template-columns: 42px 1fr; }
+      .duration { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="NOCT WAVE início">
+        <span class="brand-mark"></span>
+        <span>NOCT WAVE</span>
+      </a>
+      <nav class="nav-links" aria-label="Menu principal">
+        <a href="#musicas">Músicas</a>
+        <a href="#bio">Bio</a>
+        <a href="#agenda">Agenda</a>
+        <a href="#galeria">Galeria</a>
+        <a href="#presskit">Press Kit</a>
+      </nav>
+      <a class="btn btn-primary" href="#contato">Contratar</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse-dot"></span> Novo single disponível</div>
+          <h1>Som para <span class="gradient-text">noites elétricas</span></h1>
+          <p class="lead">Portfolio musical demonstrativo para artista, banda, DJ ou produtor. Estrutura pronta para divulgar lançamentos, shows, press kit, clipes, agenda e contatos profissionais.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#musicas">Ouvir demo</a>
+            <a class="btn" href="#presskit">Baixar press kit</a>
+            <a class="btn" href="#contato">Booking</a>
+          </div>
+          <div class="stats">
+            <div class="stat"><strong>2.4M</strong><span>streams</span></div>
+            <div class="stat"><strong>38</strong><span>shows</span></div>
+            <div class="stat"><strong>12</strong><span>faixas</span></div>
+            <div class="stat"><strong>9</strong><span>clipes</span></div>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Player de música demonstrativo">
+          <div class="cover">
+            <span class="release-badge">RELEASE 2026</span>
+            <h2 class="cover-title">Afterglow Signal</h2>
+            <p class="cover-meta">EP visual · synthwave · trap eletrônico · 6 faixas</p>
+            <div class="player">
+              <div class="player-top">
+                <button class="play" type="button" aria-label="Tocar música">▶</button>
+                <div>
+                  <div class="track-name">01 — Neon Fever</div>
+                  <div class="track-desc">Preview demonstrativo · 00:47 / 03:18</div>
+                </div>
+                <div class="bars" aria-hidden="true">
+                  <span style="--i:1;--h:22;--h2:5"></span><span style="--i:2;--h:10;--h2:28"></span><span style="--i:3;--h:30;--h2:12"></span><span style="--i:4;--h:16;--h2:33"></span><span style="--i:5;--h:34;--h2:11"></span><span style="--i:6;--h:12;--h2:25"></span>
+                </div>
+              </div>
+              <div class="progress"><span></span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="musicas">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Músicas</h2>
+          <p class="section-copy">Área para singles, EPs e álbuns com botões para Spotify, YouTube, SoundCloud, Deezer ou links próprios.</p>
+        </div>
+        <div class="music-grid">
+          <article class="album">
+            <div class="album-art"></div>
+            <div class="album-body">
+              <h3>Afterglow Signal</h3>
+              <p>EP · 2026 · eletrônico urbano</p>
+              <a class="btn" href="#">Ouvir agora</a>
+            </div>
+          </article>
+          <article class="album">
+            <div class="album-art"></div>
+            <div class="album-body">
+              <h3>Midnight District</h3>
+              <p>Single · 2025 · synthpop</p>
+              <a class="btn" href="#">Ver clipe</a>
+            </div>
+          </article>
+          <article class="album">
+            <div class="album-art"></div>
+            <div class="album-body">
+              <h3>Static Lovers</h3>
+              <p>Remix pack · 2025 · club</p>
+              <a class="btn" href="#">Remixes</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="track-list" aria-label="Lista de faixas">
+          <div class="track"><div class="track-index">01</div><div><h4>Neon Fever</h4><p>Faixa principal para abertura de show.</p></div><span class="duration">03:18</span></div>
+          <div class="track"><div class="track-index">02</div><div><h4>VHS Heartbreak</h4><p>Balada eletrônica com refrão radiofônico.</p></div><span class="duration">03:46</span></div>
+          <div class="track"><div class="track-index">03</div><div><h4>Concrete Angels</h4><p>Beat pesado com atmosfera cinematográfica.</p></div><span class="duration">02:58</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="bio">
+      <div class="container bio-grid">
+        <div class="portrait" role="img" aria-label="Foto de show demonstrativa"></div>
+        <div class="bio-card">
+          <div class="eyebrow"><span class="pulse-dot"></span> Biografia</div>
+          <h2 class="section-title">Identidade sonora clara</h2>
+          <p>NOCT WAVE é um projeto demonstrativo criado para representar um artista com estética noturna, visual forte e presença digital profissional. O site prioriza conversão: ouvir, assistir, contratar e baixar material de imprensa.</p>
+          <p>Use esta estrutura para vender sites musicais para artistas independentes, produtores, DJs, bandas, casas de show e projetos culturais. Basta trocar nome, fotos, links, agenda, músicas e textos.</p>
+          <div class="tags">
+            <span class="tag">Synthwave</span>
+            <span class="tag">Trap eletrônico</span>
+            <span class="tag">Live act</span>
+            <span class="tag">DJ set</span>
+            <span class="tag">Visual show</span>
+            <span class="tag">Booking aberto</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="agenda">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Agenda</h2>
+          <p class="section-copy">Mostre eventos confirmados, venda ingressos e deixe claro onde o público pode ver o artista ao vivo.</p>
+        </div>
+        <div class="events">
+          <article class="event"><div class="date">22 Jun</div><div><h3>Subsolo Club — São Paulo</h3><p>Show de lançamento do EP com projeção visual.</p></div><a class="btn" href="#">Ingressos</a></article>
+          <article class="event"><div class="date">04 Jul</div><div><h3>Festival Cidade Alta — Campinas</h3><p>Palco alternativo · set de 45 minutos.</p></div><a class="btn" href="#">Detalhes</a></article>
+          <article class="event"><div class="date">19 Jul</div><div><h3>Live Session — Online</h3><p>Performance gravada para YouTube e Twitch.</p></div><a class="btn" href="#">Lembrete</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="galeria">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Galeria</h2>
+          <p class="section-copy">Fotos para reforçar palco, estética, público, bastidor e presença visual.</p>
+        </div>
+        <div class="gallery">
+          <div class="gallery-item"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80" alt="Músico em apresentação" /></div>
+          <div class="gallery-item"><img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80" alt="Público em show" /></div>
+          <div class="gallery-item"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80" alt="Luzes de palco" /></div>
+          <div class="gallery-item"><img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=80" alt="Microfone no palco" /></div>
+          <div class="gallery-item"><img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=900&q=80" alt="Banda tocando ao vivo" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="presskit">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Press Kit</h2>
+          <p class="section-copy">Material profissional para contratantes, imprensa, curadores de playlist e produtores de evento.</p>
+        </div>
+        <div class="press-grid">
+          <article class="press-card"><h3>Release oficial</h3><p>Texto curto e longo para imprensa, eventos e divulgação.</p><a class="btn" href="#">Baixar PDF</a></article>
+          <article class="press-card"><h3>Fotos HD</h3><p>Banco de imagens para flyer, matéria e redes sociais.</p><a class="btn" href="#">Abrir pasta</a></article>
+          <article class="press-card"><h3>Rider técnico</h3><p>Mapa de palco, inputs, equipamentos e necessidades de som.</p><a class="btn" href="#">Ver rider</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contato">
+      <div class="container contact">
+        <div>
+          <h2>Booking, collab e imprensa</h2>
+          <p>Formulário demonstrativo para receber propostas de shows, parcerias, entrevistas, eventos corporativos e licenciamento de música.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="mailto:booking@noctwave.demo">booking@noctwave.demo</a>
+            <a class="btn" href="#">WhatsApp</a>
+          </div>
+        </div>
+        <form onsubmit="event.preventDefault(); alert('Demo: formulário pronto para conectar com WhatsApp, e-mail, Formspree, Firebase ou backend próprio.');">
+          <input type="text" name="nome" placeholder="Nome" required />
+          <input type="email" name="email" placeholder="E-mail" required />
+          <input type="text" name="assunto" placeholder="Assunto" />
+          <textarea name="mensagem" placeholder="Mensagem"></textarea>
+          <button class="btn btn-primary" type="submit">Enviar proposta</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2026 NOCT WAVE — Portfolio musical demonstrativo.</span>
+      <div class="socials">
+        <a href="#">Spotify</a>
+        <a href="#">YouTube</a>
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const play = document.querySelector('.play');
+    const trackDesc = document.querySelector('.track-desc');
+    const progress = document.querySelector('.progress span');
+
+    let audioCtx;
+    let masterGain;
+    let delay;
+    let feedback;
+    let filter;
+    let intervalId;
+    let playing = false;
+    let progressValue = 0;
+
+    const notes = [55, 65.41, 73.42, 82.41, 98, 110, 130.81, 146.83];
+
+    function initSoundtrack() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      delay = audioCtx.createDelay();
+      feedback = audioCtx.createGain();
+      filter = audioCtx.createBiquadFilter();
+
+      masterGain.gain.value = 0.16;
+      delay.delayTime.value = 0.28;
+      feedback.gain.value = 0.32;
+      filter.type = 'lowpass';
+      filter.frequency.value = 1400;
+
+      delay.connect(feedback);
+      feedback.connect(delay);
+      delay.connect(filter);
+      filter.connect(masterGain);
+      masterGain.connect(audioCtx.destination);
+    }
+
+    function playNote(freq, time, length = 0.18) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, time);
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.exponentialRampToValueAtTime(0.38, time + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + length);
+
+      osc.connect(gain);
+      gain.connect(masterGain);
+      gain.connect(delay);
+      osc.start(time);
+      osc.stop(time + length + 0.04);
+    }
+
+    function startSoundtrack() {
+      if (!audioCtx) initSoundtrack();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      playing = true;
+      play.textContent = '❚❚';
+      trackDesc.textContent = 'Soundtrack teste gerada no navegador · tocando';
+
+      let step = 0;
+      intervalId = setInterval(() => {
+        const now = audioCtx.currentTime;
+        const base = notes[step % notes.length];
+        playNote(base, now, 0.16);
+        if (step % 4 === 0) playNote(base / 2, now, 0.32);
+        if (step % 8 === 6) playNote(base * 2, now, 0.12);
+
+        progressValue = (progressValue + 4) % 100;
+        progress.style.width = progressValue + '%';
+        step++;
+      }, 190);
+    }
+
+    function stopSoundtrack() {
+      playing = false;
+      play.textContent = '▶';
+      trackDesc.textContent = 'Soundtrack teste pausada · clique para tocar';
+      clearInterval(intervalId);
+      if (masterGain) {
+        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+        masterGain.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.04);
+        setTimeout(() => masterGain.gain.value = 0.16, 120);
+      }
+    }
+
+    play.addEventListener('click', () => {
+      playing ? stopSoundtrack() : startSoundtrack();
+    });
+  </script>
+</body>
+</html>
